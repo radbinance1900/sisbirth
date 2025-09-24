@@ -7,7 +7,7 @@
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Nanum+Pen+Script&display=swap');
         
         body {
             font-family: 'Playfair Display', serif;
@@ -27,6 +27,8 @@
             color: #d391aa;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             animation: fadeIn 2s ease-out;
+            position: absolute;
+            top: 10vh;
         }
 
         .envelope-container {
@@ -79,7 +81,7 @@
         
         .envelope-text {
             position: absolute;
-            top: 50%;
+            top: 60%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-family: 'Dancing Script', cursive;
@@ -110,44 +112,52 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             animation: fadeIn 1.2s ease-out forwards;
             display: none;
-            transition: transform 1.5s ease-out;
+            transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             z-index: 4;
             transform-origin: top center;
         }
         
         .letter-card.slide-out {
             display: block;
-            transform: translate(-50%, -120%) scale(1);
+            transform: translate(-50%, -100%) scale(1);
+        }
+
+        .letter-content {
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 1.5rem;
+            color: #4a4a4a;
+            line-height: 1.6;
         }
 
         .typewriter h1 {
             overflow: hidden;
-            border-right: .15em solid #d391aa;
             white-space: nowrap;
             animation: 
-                typing 3s steps(30, end),
-                blink-caret .75s step-end infinite;
-            font-size: 1.5rem;
+                typing-title 2s steps(20, end) forwards;
+            font-size: 2.2rem;
             font-weight: bold;
-            color: #4a4a4a;
+            color: #d391aa;
+            margin-bottom: 1rem;
+            border-right: .15em solid #d391aa;
         }
         
         .typewriter p {
             overflow: hidden;
-            border-right: .15em solid #d391aa;
             white-space: pre-wrap;
             margin-top: 1rem;
             animation: 
-                typing-text 10s steps(60, end) forwards;
+                typing-text 8s steps(60, end) forwards;
             font-size: 1.2rem;
             line-height: 1.6;
             color: #4a4a4a;
             visibility: hidden;
-            animation-delay: 3.5s;
+            animation-delay: 2.5s;
+            font-family: 'Playfair Display', serif;
+            border-right: .15em solid #d391aa;
         }
         
         /* The typewriter cursor effect */
-        @keyframes typing {
+        @keyframes typing-title {
             from { width: 0 }
             to { width: 100% }
         }
@@ -197,9 +207,9 @@
             </div>
             <!-- Letter card, initially hidden inside the envelope -->
             <div id="letter-card" class="letter-card">
-                <div class="typewriter">
+                <div class="letter-content">
                     <h1 class="font-dancing-script">Happy Birthday Didi! 🎂</h1>
-                    <p id="message-text" class="font-playfair-display"></p>
+                    <p id="message-text"></p>
                 </div>
             </div>
         </div>
@@ -230,15 +240,12 @@
         }
         
         envelopeContainer.addEventListener('click', () => {
-            // Check if it's already open to prevent multiple clicks
             if (envelopeContainer.classList.contains('open')) {
                 return;
             }
 
-            // Open the envelope
             envelopeContainer.classList.add('open');
 
-            // Trigger confetti as the envelope opens
             myConfetti({
                 particleCount: 150,
                 spread: 120,
@@ -253,16 +260,14 @@
                 colors: ['#ffc0cb', '#f4c2c2', '#d391aa', '#ffffff']
             });
 
-            // After a delay, slide the letter out
             setTimeout(() => {
                 letterCard.classList.add('slide-out');
                 
-                // After the letter has slid out, start the typewriter effect
                 setTimeout(() => {
                     typeWriter();
-                }, 1000); // This delay should match the letter slide-out animation duration
+                }, 1000); 
                 
-            }, 800); // Wait for the flap to open
+            }, 800);
         });
     </script>
 </body>
