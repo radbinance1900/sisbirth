@@ -2,233 +2,189 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Happy Birthday Didi 🎀</title>
+  <title>For Didi 🎀</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Cute handwriting + rounded script for headings -->
-  <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Cookie&display=swap" rel="stylesheet"><!-- [web:3][web:5][web:17] -->
-
-  <!-- JS Confetti (CDN, zero-config) -->
-  <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script><!-- [web:10] -->
+  <!-- Cute script + friendly handwriting -->
+  <link href="https://fonts.googleapis.com/css2?family=Cookie&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
       --bg: #ffffff;
-      --pink: #ff6fa5;
-      --pink-dark: #e85c92;
-      --pink-light: #ffd3e6;
-      --shadow: rgba(0,0,0,0.12);
+      --pink: #d78aa5;
+      --pink-mid: #d78aa5;
+      --pink-dark: #c27896;
+      --pink-light: #eeb9c9;
+      --ink: #4a3140;
       --card: #fff7fb;
-      --accent: #ff3d85;
-      --ink: #5b2b3a;
+      --shadow: rgba(0,0,0,0.16);
+      --accent: #ff468d;
     }
 
-    *{ box-sizing: border-box; }
-    html, body{
-      height:100%;
-      margin:0;
-      background: var(--bg);
-    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg)}
     body{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-      font-family: 'Kalam', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+      display:flex;align-items:center;justify-content:center;
+      padding:20px;
+      font-family:'Kalam', system-ui, -apple-system, Segoe UI, Roboto, Arial;
     }
 
-    /* Scene wrapper */
     .scene{
-      width:min(920px, 100%);
-      aspect-ratio: 16/9;
-      max-height: 92vh;
-      position: relative;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      perspective: 1400px;
+      width:min(920px,100%);
+      max-height:92vh;
+      aspect-ratio:16/9;
+      display:flex;align-items:center;justify-content:center;
+      position:relative;
       isolation:isolate;
     }
 
-    /* Envelope container */
+    /* Title */
+    .title{
+      position:absolute; top:10px; left:50%; transform:translateX(-50%);
+      font-family:'Cookie', cursive;
+      font-size: clamp(28px, 6vw, 56px);
+      color:#d79ab1;
+      opacity:.9;
+      pointer-events:none;
+      text-shadow:0 4px 12px rgba(0,0,0,.07);
+    }
+
+    /* Envelope block, patterned like the image */
     .envelope{
-      width:min(540px, 85vw);
+      width:min(560px, 86vw);
+      position:relative;
+      cursor:pointer;
+      user-select:none;
+      filter: drop-shadow(0 24px 28px var(--shadow));
+      display:grid;
+      place-items:center;
+      outline: none;
+    }
+
+    /* Base rectangle with triangle pattern rows */
+    .env-body{
+      width:100%;
       height:min(360px, 56vw);
-      position: relative;
-      transform-style: preserve-3d;
-      filter: drop-shadow(0 18px 28px var(--shadow));
-      cursor: pointer;
-      user-select: none;
-    }
-
-    /* Envelope base */
-    .env-base{
-      position:absolute;
-      inset:0;
-      background: linear-gradient(180deg, var(--pink) 0%, var(--pink-dark) 100%);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    /* Decorative envelope seams */
-    .env-base::before,
-    .env-base::after{
-      content:'';
-      position:absolute;
-      inset:0;
       background:
-        linear-gradient(135deg, rgba(255,255,255,0.35) 0 2px, transparent 0) top left,
-        linear-gradient(-135deg, rgba(0,0,0,0.06) 0 2px, transparent 0) bottom right;
-      background-size: 100% 50%, 100% 50%;
-      mix-blend-mode: soft-light;
+        linear-gradient(#0000, #0000) padding-box,
+        repeating-linear-gradient(
+          0deg,
+          #e8b3c4 0 52px,
+          #e8b3c4 52px 60px
+        );
+      border-radius:18px;
+      position:relative;
+      overflow:hidden;
+      border: 0 solid transparent;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.05);
+    }
+
+    /* Pink rows of small triangles to echo the screenshot */
+    .env-body::before{
+      content:'';
+      position:absolute; inset:0 0 0 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          #e8b3c4 0 60px,
+          #e8b3c4 60px 60px
+        ),
+        conic-gradient(from 45deg at 16px 30px, #eab8c7 0 25%, #0000 0 50%) 0 0/64px 60px repeat;
+      mix-blend-mode: multiply;
+      opacity:.8;
+    }
+
+    /* Top triangle flap (color like the screenshot) */
+    .env-flap{
+      position:absolute;
+      width: 76%;
+      aspect-ratio: 1/0.62;
+      background: var(--pink-mid);
+      left:50%; top: -3%;
+      transform: translateX(-50%);
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      box-shadow: 0 10px 24px rgba(0,0,0,.12);
+      transform-origin: top center;
+      transition: transform 900ms cubic-bezier(.2,.8,.2,1);
+      z-index: 3;
+    }
+
+    /* Front cover strip to hide letter edge and create opening seam */
+    .env-front{
+      position:absolute; left:0; right:0; bottom:0;
+      height:58%;
+      background: linear-gradient(180deg, #e7a8bc 0%, #e3a0b6 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      border-bottom-left-radius:18px; border-bottom-right-radius:18px;
+      z-index:4;
+      box-shadow: inset 0 6px 12px rgba(255,255,255,.25), 0 10px 20px rgba(0,0,0,.08);
+    }
+
+    /* Handwritten on envelope: "for didi" */
+    .for{
+      position:absolute;
+      bottom: 18%;
+      left:50%; transform:translateX(-50%) rotate(-2deg);
+      font-family:'Cookie', cursive;
+      font-size: clamp(22px, 4.6vw, 40px);
+      color:#ffeaf2;
+      text-shadow:0 2px 0 rgba(0,0,0,.12);
+      z-index:5;
       pointer-events:none;
     }
 
-    /* Bottom triangle flap to create envelope look */
-    .env-bottom{
-      position:absolute;
-      inset:0;
-      clip-path: polygon(0 100%, 50% 35%, 100% 100%);
-      background: linear-gradient(180deg, var(--pink-light) 0%, #ffc0da 100%);
-      transform: translateZ(1px);
-    }
-
-    /* Top flap rotates open */
-    .env-top{
-      position:absolute;
-      left:0; right:0;
-      top:0; height:55%;
-      transform-origin: top center;
-      background: linear-gradient(180deg, #ff8fba 0%, var(--pink) 100%);
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 65%, 0 100%);
-      border-top-left-radius: 16px;
-      border-top-right-radius: 16px;
-      box-shadow: 0 10px 20px var(--shadow);
-      transition: transform 900ms cubic-bezier(.2,.8,.2,1);
-      transform: rotateX(0deg) translateZ(2px);
-      z-index: 4;
-    }
-
-    /* Wax heart seal */
-    .seal{
-      position:absolute;
-      left:50%; top:52%;
-      transform: translate(-50%, -50%);
-      width:64px; height:64px;
-      background: radial-gradient(circle at 30% 30%, #ff79a8 0 40%, #ff3d85 41% 100%);
-      border-radius: 50%;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.18);
-      display:grid;
-      place-items:center;
-      color:white;
-      font-size:28px;
-      z-index:5;
-      transition: transform 300ms ease, opacity 300ms ease;
-    }
-    .envelope.open .seal{
-      transform: translate(-50%, -50%) scale(.85);
-      opacity:.0;
-    }
-
-    /* "for didi" handwriting on envelope */
-    .for-didi{
-      position:absolute;
-      bottom:16%;
-      left:50%;
-      transform: translateX(-50%) rotate(-2deg);
-      font-family: 'Cookie', cursive;
-      font-size: clamp(22px, 4.2vw, 38px);
-      color: #ffe9f3;
-      text-shadow: 0 2px 0 rgba(0,0,0,0.12);
-      letter-spacing:.5px;
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    /* Letter card that slides out */
+    /* Letter card that slides up when opened */
     .letter{
       position:absolute;
-      left:50%;
-      bottom:10%;
-      transform: translate(-50%, 0) translateZ(0);
-      width:calc(100% - 56px);
-      height:calc(100% - 110px);
+      width: 80%;
+      max-width: 520px;
       background: linear-gradient(180deg, #ffffff 0%, var(--card) 100%);
-      border-radius: 14px;
-      box-shadow:
-        0 10px 18px rgba(0,0,0,0.10),
-        inset 0 -2px 0 rgba(0,0,0,0.05);
-      padding: 24px 22px;
-      z-index: 2;
-      overflow: hidden;
-      display:flex;
-      align-items:flex-start;
-      justify-content:flex-start;
-      gap:12px;
+      border-radius:16px;
+      padding: 22px 22px 26px 28px;
+      left: 50%;
+      bottom: 16%;
+      transform: translate(-50%, 0);
+      box-shadow: 0 16px 26px rgba(0,0,0,.12), inset 0 -1px 0 rgba(0,0,0,.04);
       border: 1px solid #ffe0ef;
+      z-index:2;
+      overflow:hidden;
       transition: transform 900ms cubic-bezier(.2,.8,.2,1), box-shadow 900ms cubic-bezier(.2,.8,.2,1);
     }
 
-    /* Decorative holes like stationery */
-    .letter::before{
+    /* Subtle vertical line like stationery */
+    .letter::after{
       content:'';
-      position:absolute;
-      left:14px; top:14px; bottom:14px;
-      width:10px;
-      background:
-        radial-gradient(circle at 50% 12%, #ffd0e3 0 4px, transparent 5px) 0 0 / 10px 48px repeat-y;
-      opacity:.9;
-      pointer-events:none;
+      position:absolute; top:0; bottom:0; right:16px; width:3px;
+      background: linear-gradient(180deg, #e7a8bc 0%, #ffbcd2 100%);
+      border-radius:3px;
+      opacity:.85;
     }
 
-    /* When open: flap rotates and letter slides up */
-    .envelope.open .env-top{
-      transform: rotateX(-155deg) translateZ(2px);
-    }
-    .envelope.open .letter{
-      transform: translate(-50%, -46%) translateZ(0);
-      box-shadow:
-        0 22px 40px rgba(0,0,0,0.18),
-        inset 0 -2px 0 rgba(0,0,0,0.05);
-    }
-
-    /* Header text inside the letter */
     .greet{
-      width:100%;
-      font-family: 'Cookie', cursive;
-      font-size: clamp(28px, 5vw, 46px);
+      font-family:'Cookie', cursive;
       color: var(--accent);
-      margin: 4px 0 10px 0;
-      letter-spacing:.3px;
-      display:flex;
-      align-items:center;
-      gap:12px;
+      font-size: clamp(26px, 4.8vw, 44px);
+      margin: 2px 0 10px 0;
     }
 
     .divider{
-      height: 2px;
-      width: 100%;
+      height:2px; width:100%;
       background: linear-gradient(90deg, transparent, #ffd0e4 30%, #ffc2dd 70%, transparent);
-      border-radius: 2px;
-      margin: 6px 0 10px 0;
+      border-radius:2px; margin: 2px 0 12px 0;
     }
 
-    /* Typewriter container */
-    .typewriter{
-      position: relative;
-      font-size: clamp(16px, 2.4vw, 22px);
-      line-height: 1.6;
+    .msg{
       color: var(--ink);
-      padding-right: 8px;
+      font-size: clamp(16px, 2.6vw, 22px);
+      line-height: 1.7;
       white-space: pre-wrap;
       min-height: 8lh;
     }
 
-    /* Caret blink */
+    /* Caret */
     .caret{
       display:inline-block;
-      width: 10px;
-      height: 1.05em;
+      width: 10px; height: 1.05em;
       margin-left: 2px;
       background: linear-gradient(180deg, #ff8fba 0%, #ff3d85 100%);
       border-radius: 2px;
@@ -236,204 +192,138 @@
       animation: blink 1s steps(1) infinite;
     }
     @keyframes blink{
-      0%,49%{ opacity:1; }
-      50%,100%{ opacity:0; }
+      0%,49%{opacity:1} 50%,100%{opacity:0}
     }
 
-    /* Floating hearts on open */
-    .float-hearts{
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      overflow:hidden;
-      z-index: 6;
-    }
-    .heart{
-      position:absolute;
-      left:50%;
-      top:54%;
-      font-size: 18px;
-      animation: floatUp 1400ms ease-out forwards;
-      opacity: 0.85;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-    }
-    @keyframes floatUp{
-      0%{ transform: translate(-50%, 0) scale(.8); opacity:0; }
-      10%{ opacity:1; }
-      100%{ transform: translate(-50%, -240px) scale(1.25) rotate(-8deg); opacity:0; }
+    /* Open state */
+    .opened .env-flap{ transform: translateX(-50%) rotateX(-165deg); }
+    .opened .letter{
+      transform: translate(-50%, -55%);
+      box-shadow: 0 26px 44px rgba(0,0,0,.18), inset 0 -1px 0 rgba(0,0,0,.05);
     }
 
     /* Tap hint */
     .hint{
-      position:absolute;
-      top: 100%;
-      left:50%;
-      transform: translate(-50%, 12px);
-      font-size: 14px;
-      color:#a04e6c;
-      opacity:.85;
-      background: #fff0f6;
-      padding: 6px 10px;
-      border-radius: 999px;
-      box-shadow: 0 6px 16px rgba(255, 99, 150, 0.18);
-      transition: opacity 500ms ease, transform 500ms ease;
-      white-space: nowrap;
-      font-weight: 700;
+      position:absolute; top:100%; left:50%; transform:translate(-50%, 12px);
+      font-size:14px; font-weight:700; color:#9a5873;
+      background:#fff0f6; padding:6px 10px; border-radius:999px;
+      box-shadow:0 6px 16px rgba(255, 99, 150, .18);
+      white-space:nowrap;
+      transition:opacity .5s ease, transform .5s ease;
     }
-    .envelope.open .hint{ opacity:0; transform: translate(-50%, 18px); }
+    .opened .hint{opacity:0; transform:translate(-50%, 18px)}
 
-    /* Accessibility focus ring */
-    .envelope:focus-visible{
-      outline: 4px solid #ffacd0;
-      outline-offset: 6px;
-      border-radius: 18px;
+    /* Confetti layer with emojis floating up lightly (CSS-only hearts) */
+    .float{
+      position:absolute; inset:0; pointer-events:none; overflow:hidden; z-index:6;
+    }
+    .heart{ position:absolute; left:50%; top:54%; font-size:18px;
+      animation: floatUp 1400ms ease-out forwards; opacity:.9;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,.2));
+    }
+    @keyframes floatUp{
+      0%{ transform: translate(-50%, 0) scale(.8); opacity:0; }
+      10%{ opacity:1; }
+      100%{ transform: translate(-50%, -260px) scale(1.25) rotate(-8deg); opacity:0; }
     }
   </style>
 </head>
 <body>
   <div class="scene">
-    <div class="float-hearts" aria-hidden="true"></div>
+    <div class="title">A Special Letter For You</div>
 
-    <button class="envelope" id="envelope" aria-label="Open birthday letter for didi">
-      <div class="env-base"></div>
-      <div class="env-bottom"></div>
-      <div class="env-top" id="flap"></div>
-      <div class="seal" id="seal" title="Open">
-        💖
-      </div>
-      <div class="for-didi">for didi</div>
+    <div class="float" aria-hidden="true" id="float"></div>
 
-      <div class="letter" id="letter">
-        <div style="width:100%;">
+    <button class="envelope" id="env" aria-label="Open birthday letter for didi">
+      <div class="env-body">
+        <div class="env-flap"></div>
+        <div class="env-front"></div>
+        <div class="for">for didi</div>
+
+        <div class="letter" id="letter">
           <div class="greet">Happy Birthday, Didi 🎂✨</div>
           <div class="divider"></div>
-          <div class="typewriter" id="tw">
-            <!-- Typed text will appear here -->
-            <span class="caret" id="caret"></span>
-          </div>
+          <div class="msg" id="msg"><span class="caret" id="caret"></span></div>
+          <div class="hint">Tap the envelope</div>
         </div>
-        <div class="hint">Tap the envelope</div>
       </div>
     </button>
   </div>
 
+  <!-- Lightweight confetti (emoji-based) -->
+  <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+
   <script>
-    // Confetti instance (create only once as per library note) [web:10]
+    const env = document.getElementById('env');
+    const msgBox = document.getElementById('msg');
+    const caret = document.getElementById('caret');
+    const floatLayer = document.getElementById('float');
     const jsConfetti = new JSConfetti();
 
-    const envelope = document.getElementById('envelope');
-    const typeBox = document.getElementById('tw');
-    const caret = document.getElementById('caret');
-    const heartsLayer = document.querySelector('.float-hearts');
+    // Full message with extra cute emojis
+    const message = "Happy Birthday didi 🎉💖\nThanks for always supporting me and standing firm behind me 🙏✨.\nYou gave me strength and I'm there too always — Your Rugved 💪💞.\nWishing you a happy B'day 🎂🌟. Love you dida 🥰❤️.";
 
-    const message = "Happy Birthday didi 🎉💖\nThanks for always supporting me and standing firm behind me.\nYou gave me strength and I'm there too always — Your Rugved.\nWishing you a happy B'day! Love you, dida 🥰🎂🌟"; // [web:8]
+    let opened = false, typing = false;
 
-    let hasOpened = false;
-    let typing = false;
-
-    function spawnHeartsBurst(){
+    function hearts(){
       const emojis = ['💖','💗','💓','💕','💞','💝','🌸','✨'];
       for(let i=0;i<12;i++){
-        const span = document.createElement('span');
-        span.className = 'heart';
-        span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
-        const jitterX = (Math.random()*220 - 110);
+        const s = document.createElement('span');
+        s.className='heart';
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        const jitter = (Math.random()*220 - 110);
         const delay = Math.random()*180;
-        span.style.left = `calc(50% + ${jitterX}px)`;
-        span.style.animationDelay = `${delay}ms`;
-        span.style.fontSize = `${18 + Math.random()*10}px`;
-        heartsLayer.appendChild(span);
-        setTimeout(()=> span.remove(), 1800 + delay + 200);
+        s.style.left = `calc(50% + ${jitter}px)`;
+        s.style.animationDelay = `${delay}ms`;
+        s.style.fontSize = `${18 + Math.random()*10}px`;
+        floatLayer.appendChild(s);
+        setTimeout(()=> s.remove(), 1900 + delay);
       }
     }
 
-    function typeWriterText(text, speed = 26){
-      if(typing) return;
-      typing = true;
-
-      // Remove existing caret temporarily during typing
+    function typeWriter(text, speed=26){
+      if(typing) return; typing=true;
       if(caret && caret.parentNode) caret.remove();
-
       const span = document.createElement('span');
-      let i = 0;
-      typeBox.appendChild(span);
-
-      function tick(){
+      msgBox.appendChild(span);
+      let i=0;
+      (function tick(){
         if(i <= text.length){
-          const ch = text[i] || '';
-          span.textContent += ch;
+          span.textContent += text[i] || '';
           i++;
           setTimeout(tick, speed + Math.round(Math.random()*24));
-        } else {
-          // Re-attach blinking caret
-          if(caret) typeBox.appendChild(caret);
-          typing = false;
+        }else{
+          if(caret) msgBox.appendChild(caret);
+          typing=false;
         }
-      }
-      tick();
+      })();
     }
 
-    function openEnvelope(){
-      if(hasOpened) return;
-      hasOpened = true;
+    function open(){
+      if(opened) return;
+      opened = true;
+      env.classList.add('opened');
 
-      envelope.classList.add('open');
-
-      // Confetti burst with emojis and colors (the lib supports emojis) [web:10][web:7]
+      // Confetti celebration with emojis and colors
       jsConfetti.addConfetti({
-        emojis: ['💖','🎉','🎂','🌟','💝','✨'],
-        emojiSize: 44,
-        confettiNumber: 70,
+        emojis:['🎉','🎂','💖','✨','🌸','💝'],
+        emojiSize:44, confettiNumber:80
       });
-      // Follow-up color confetti
       setTimeout(()=>{
         jsConfetti.addConfetti({
-          confettiColors: ['#ff3d85','#ff9ec2','#ffd3e6','#ffffff','#ffc2dd'],
-          confettiRadius: 5,
-          confettiNumber: 120,
+          confettiColors:['#ff3d85','#ff9ec2','#ffd3e6','#ffffff','#ffc2dd'],
+          confettiNumber:120, confettiRadius:5
         });
-      }, 450);
+      }, 420);
 
-      spawnHeartsBurst();
-
-      // Start the typewriter after flap animation
-      setTimeout(()=>{
-        typeWriterText(message, 24); // [web:8]
-      }, 700);
+      hearts();
+      setTimeout(()=> typeWriter(message, 24), 650);
     }
 
-    // Click or keyboard access
-    envelope.addEventListener('click', openEnvelope);
-    envelope.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter' || e.key === ' '){
-        e.preventDefault();
-        openEnvelope();
-      }
+    env.addEventListener('click', open);
+    env.addEventListener('keydown', e=>{
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(); }
     });
-
-    // Optional: gentle nudge animation for the seal to invite interaction
-    let nudgeTimer = null;
-    const seal = document.getElementById('seal');
-    function nudgeSeal(){
-      if(hasOpened) return;
-      seal.animate(
-        [
-          { transform: 'translate(-50%, -50%) scale(1)' },
-          { transform: 'translate(-50%, -52%) scale(1.06)' },
-          { transform: 'translate(-50%, -50%) scale(1)' }
-        ],
-        { duration: 900, easing: 'ease', iterations: 1 }
-      );
-    }
-    nudgeTimer = setInterval(nudgeSeal, 2200);
-
-    // Clean up nudge when opened
-    const observer = new MutationObserver(()=>{
-      if(envelope.classList.contains('open')){
-        clearInterval(nudgeTimer);
-      }
-    });
-    observer.observe(envelope, { attributes:true, attributeFilter:['class'] });
   </script>
 </body>
 </html>
