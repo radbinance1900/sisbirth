@@ -1,274 +1,329 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Didi</title>
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Happy Raksha Bandhan</title>
+    <meta name="description" content="A Raksha Bandhan surprise letter with envelope animation and typewriter message." />
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Nanum+Pen+Script&display=swap');
-        
-        body {
-            font-family: 'Playfair Display', serif;
-            background-color: #f8f8f8;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-            overflow: hidden;
+        :root {
+            --bg: #fff6ea;
+            --paper: #fff9f0;
+            --ink: #542a2a;
+            --primary: #b14646;
+            --accent: #f4b4c7;
+            --accent2: #f7d26a;
+            --shadow: 0 10px 30px rgba(0,0,0,.08);
+            --radius: 20px;
         }
-        
-        h1.main-heading {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
-            color: #d391aa;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            animation: fadeIn 2s ease-out;
-            position: absolute;
-            top: 10vh;
+        * { box-sizing: border-box }
+        html, body { height: 100% }
+        body {
+            margin: 0;
+            font-family: "Georgia", serif;
+            color: var(--ink);
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wrap { width: min(560px, 94vw); padding: 16px; text-align: center; }
+
+        .greet { margin: 6vh 0 24px; }
+        .greet h1 {
+            margin: 0 0 6px;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: clamp(28px, 5.5vw, 44px);
+        }
+        .greet h2 {
+            margin: 4px 0 22px;
+            font-weight: 400;
+            color: #7a4a4a;
+            font-size: clamp(16px, 3.8vw, 22px);
         }
 
-        .envelope-container {
-            perspective: 1000px;
-            cursor: pointer;
+        .stage {
             position: relative;
-            width: 300px;
-            height: 200px;
+            perspective: 1200px;
+            margin: 0 auto 18px;
+            width: min(440px, 90vw);
+            height: 280px;
         }
-        
-        .envelope-flap {
-            width: 0;
-            height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 150px solid #d391aa;
+        .envelope {
+            width: 100%; height: 100%;
+            position: relative;
+            border-radius: 16px;
+            transform-style: preserve-3d;
+            box-shadow: var(--shadow);
+        }
+        .env-back { position: absolute; inset: 0; background: linear-gradient(#f3e9dc,#efe0cf); border-radius: 16px; overflow: hidden; }
+        .env-bottom, .env-left, .env-right, .env-top {
+            position: absolute; background: #f1e4d2;
+        }
+        .env-bottom {
+            left: 0; right: 0; bottom: 0; height: 60%;
+            clip-path: polygon(0 0, 50% 80%, 100% 0, 100% 100%, 0 100%);
+            background: #f0e2cf;
+        }
+        .env-left {
+            left: 0; top: 0; bottom: 0; width: 50%;
+            clip-path: polygon(0 0, 0 100%, 100% 60%, 100% 0);
+            background: #f3e6d6;
+        }
+        .env-right {
+            right: 0; top: 0; bottom: 0; width: 50%;
+            clip-path: polygon(0 0, 0 60%, 100% 100%, 100% 0);
+            background: #f3e6d6;
+        }
+        .env-top {
+            left: 0; right: 0; top: 0; height: 62%;
             transform-origin: top center;
-            transition: transform 0.8s ease;
+            background: #e8a6b7;
+            clip-path: polygon(0 0, 100% 0, 50% 92%);
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            transition: transform .9s cubic-bezier(.22,.76,.15,1), filter .4s;
+            z-index: 3;
+        }
+        .seal {
             position: absolute;
-            top: 0;
-            left: 0;
+            left: 50%; top: 50%;
+            transform: translate(-50%,-20%);
+            width: 54px; height: 54px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffce6b 0 40%, #cc6b6b 41% 60%, #ffce6b 61% 100%);
+            z-index: 4;
+        }
+        .letter {
+            position: absolute;
+            left: 8%; right: 8%;
+            bottom: 16%;
+            height: 74%;
+            background: var(--paper);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transform: translateZ(1px);
+            overflow: hidden;
+            padding: 22px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 2;
+            transition: transform .9s cubic-bezier(.22,.76,.15,1);
+        }
+        .letter .teaser {
+            font-size: clamp(16px, 3.6vw, 20px);
+            color: #7a4a4a;
+            font-weight: 600;
+        }
+        .open .env-top { transform: rotateX(-165deg); filter: brightness(.95); }
+        .open .letter { transform: translateY(-48%) translateZ(1px); }
+
+        .cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border-radius: 999px;
+            background: linear-gradient(180deg,#fff,#f5e9dc);
+            border: 1px solid #eadcca;
+            box-shadow: var(--shadow);
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .finger { font-size: 18px; }
+
+        .screen { display: none; }
+        .screen.active { display: block; }
+
+        .full {
+            margin-top: 8px;
+            background: var(--paper);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 26px 18px 22px;
+            text-align: left;
+            position: relative;
+        }
+        .full h3 { text-align: center; font-size: clamp(18px, 4.4vw, 24px); font-weight: 700; margin-bottom: 10px; }
+        .full .dear { font-size: clamp(16px, 3.8vw, 20px); margin-bottom: 14px; font-weight: 700; }
+        .typing { font-size: clamp(15px, 3.6vw, 19px); line-height: 1.7; min-height: 140px; white-space: pre-wrap; }
+        .sign { margin-top: 18px; font-weight: 700; text-align: center; }
+
+        .hearts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+        .heart-dot {
+            position: absolute; width: 8px; height: 8px;
+            transform: rotate(45deg);
+            animation: float 6s linear infinite;
+        }
+        .heart-dot::before, .heart-dot::after {
+            content: ""; position: absolute; width: 8px; height: 8px; border-radius: 50%;
+        }
+        .heart-dot::before { left: -4px; top: 0 }
+        .heart-dot::after { left: 0; top: -4px }
+        @keyframes float {
+            from { transform: translateY(40px) rotate(45deg); opacity: .7 }
+            to { transform: translateY(-260px) rotate(45deg); opacity: 0 }
+        }
+
+        .sound {
+            position: fixed; right: 14px; top: 14px;
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            display: grid; place-items: center;
+            background: #ffffffcc;
+            box-shadow: var(--shadow);
+            border: 1px solid #eadcca;
+            cursor: pointer;
             z-index: 10;
         }
-
-        .envelope-front {
-            width: 300px;
-            height: 200px;
-            background-color: #f4c2c2;
-            border-radius: 12px;
-            position: relative;
-            z-index: 5;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
-
-        .envelope-front:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                linear-gradient(45deg, transparent 50%, #e6a8a8 50%),
-                linear-gradient(135deg, #e6a8a8 50%, transparent 50%);
-            background-size: 50px 50px;
-            background-position: 0 0;
-            border-radius: 12px;
-            z-index: 6;
-        }
-        
-        .envelope-text {
-            position: absolute;
-            top: 60%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            color: #4a4a4a;
-            z-index: 7;
-            transition: opacity 0.5s;
-        }
-
-        .envelope-container.open .envelope-flap {
-            transform: rotateX(180deg);
-        }
-
-        .envelope-container.open .envelope-text {
-            opacity: 0;
-        }
-        
-        .letter-card {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, 0%) scale(0.8);
-            width: 80%;
-            max-width: 400px;
-            background: #fff;
-            padding: 2.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1.2s ease-out forwards;
-            display: none;
-            transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            z-index: 4;
-            transform-origin: top center;
-        }
-        
-        .letter-card.slide-out {
-            display: block;
-            transform: translate(-50%, -100%) scale(1);
-        }
-
-        .letter-content {
-            font-family: 'Nanum Pen Script', cursive;
-            font-size: 1.5rem;
-            color: #4a4a4a;
-            line-height: 1.6;
-        }
-
-        .typewriter h1 {
-            overflow: hidden;
-            white-space: nowrap;
-            animation: 
-                typing-title 2s steps(20, end) forwards;
-            font-size: 2.2rem;
-            font-weight: bold;
-            color: #d391aa;
-            margin-bottom: 1rem;
-            border-right: .15em solid #d391aa;
-        }
-        
-        .typewriter p {
-            overflow: hidden;
-            white-space: pre-wrap;
-            margin-top: 1rem;
-            animation: 
-                typing-text 8s steps(60, end) forwards;
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #4a4a4a;
-            visibility: hidden;
-            animation-delay: 2.5s;
-            font-family: 'Playfair Display', serif;
-            border-right: .15em solid #d391aa;
-        }
-        
-        /* The typewriter cursor effect */
-        @keyframes typing-title {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        /* The typewriter text effect */
-        @keyframes typing-text {
-            from { width: 0; visibility: visible; }
-            to { width: 100%; visibility: visible; }
-        }
-
-        /* The blinking cursor effect */
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: #d391aa; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        /* Confetti canvas styling */
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 20;
-            pointer-events: none;
-        }
+        .sound svg { width: 22px; height: 22px; fill: #7a4a4a }
+        .muted svg { opacity: .45 }
     </style>
 </head>
-<body class="bg-white">
-    <!-- Main Heading -->
-    <h1 class="main-heading">A Special Delivery For You</h1>
 
-    <div class="relative w-full h-full flex justify-center items-center">
-        <!-- The confetti canvas will be generated here by the JS -->
-        <canvas id="confetti-canvas"></canvas>
+<body>
+    <!-- Music Toggle -->
+    <button class="sound muted" aria-label="Toggle music" title="Music">
+        <svg viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.06A4.5 4.5 0 0 0 16.5 12zm-2.5-8v2.06A6.5 6.5 0 0 1 20.5 12 6.5 6.5 0 0 1 14 18.94V21A8.5 8.5 0 0 0 22.5 12 8.5 8.5 0 0 0 14 4z"/></svg>
+    </button>
 
-        <!-- Main content: Envelope -->
-        <div id="envelope-container" class="envelope-container transition-all duration-500 ease-in-out">
-            <div class="envelope-flap"></div>
-            <div class="envelope-front flex justify-center items-center">
-                <span class="envelope-text">To: Didi</span>
+    <div class="wrap">
+        <!-- Screen 1: Cover -->
+        <section class="screen active" id="cover">
+            <div class="greet">
+                <h1>Happy Birthday Didi</h1>
+                <h2>To my Dearest Sister</h2>
             </div>
-            <!-- Letter card, initially hidden inside the envelope -->
-            <div id="letter-card" class="letter-card">
-                <div class="letter-content">
-                    <h1 class="font-dancing-script">Happy Birthday Didi! 🎂</h1>
-                    <p id="message-text"></p>
+
+            <div class="stage" id="stage">
+                <div class="envelope" id="envelope">
+                    <div class="env-back">
+                        <div class="env-left"></div>
+                        <div class="env-right"></div>
+                        <div class="env-bottom"></div>
+                        <div class="env-top"></div>
+                        <span class="seal"></span>
+                        <div class="letter">
+                            <div class="teaser">A Letter From Your Brother</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <button class="cta" id="openBtn">
+                <span class="finger">👉</span> Click to open your surprise
+            </button>
+        </section>
+
+        <!-- Screen 2: Full Letter -->
+        <section class="screen" id="fullLetter">
+            <div class="full">
+                <div class="hearts" id="hearts"></div>
+                <h3>A Letter from your brother</h3>
+                <div class="dear">My Dearest Sister,</div>
+                <div class="typing" id="typing"></div>
+                <div class="sign">Your Loving Brother — RUGVED ❤️</div>
+            </div>
+        </section>
     </div>
 
-    <!-- Confetti JS Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <!-- Background Music -->
+    <audio id="bgm" preload="auto" loop>
+        <source src="music.mp3" type="audio/mpeg" />
+    </audio>
+
     <script>
-        const envelopeContainer = document.getElementById('envelope-container');
-        const letterCard = document.getElementById('letter-card');
-        const messageTextElement = document.getElementById('message-text');
-        const canvas = document.getElementById('confetti-canvas');
-        const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
+        const openBtn = document.getElementById('openBtn');
+        const stage = document.getElementById('stage');
+        const cover = document.getElementById('cover');
+        const fullLetter = document.getElementById('fullLetter');
+        const typingBox = document.getElementById('typing');
+        const audio = document.getElementById('bgm');
+        const soundBtn = document.querySelector('.sound');
 
-        const message = "Thanks for always supporting me and standing firm behind me. You gave me strength and I'm there too always 🥰.\n\nYour Rugved.\n\nWishing you a happy B'day ✨. Love you dida ❤️.";
-        let i = 0;
+        let wantsPlay = false;
 
-        function typeWriter() {
-            if (i < message.length) {
-                if (message.charAt(i) === '\n') {
-                    messageTextElement.innerHTML += '<br>';
-                } else {
-                    messageTextElement.innerHTML += message.charAt(i);
+        soundBtn.addEventListener('click', async () => {
+            if (audio.paused) {
+                try { await audio.play(); soundBtn.classList.remove('muted'); } catch(e){}
+            } else {
+                audio.pause(); soundBtn.classList.add('muted');
+            }
+        });
+
+        document.addEventListener('pointerdown', async () => {
+            if (!wantsPlay) {
+                wantsPlay = true;
+                try { await audio.play(); soundBtn.classList.remove('muted'); } catch(e){}
+            }
+        }, { once: true });
+
+        openBtn.addEventListener('click', async () => {
+            // Try to start music immediately on click
+            if (audio.paused) {
+                try { 
+                    await audio.play(); 
+                    soundBtn.classList.remove('muted'); 
+                } catch(e){}
+            }
+
+            stage.classList.add('open');
+            setTimeout(() => {
+                cover.classList.remove('active');
+                fullLetter.classList.add('active');
+                startHearts();
+                startTyping();
+            }, 1100);
+        });
+
+        // The message you want to display, now in the correct format
+        const messageLines = [
+            "You light up my world with your smile and love. Having you in my life is a true blessing. ",
+            "This Birthday, I promise, no distance or challenge will ever break our bond. ",
+            "With endless love and warm wishes,",
+            "Your Rugved.",
+            "Wishing you a happy B'day ✨. Love you dida ❤️."
+        ];
+
+        async function startTyping() {
+            typingBox.textContent = "";
+            for (let i = 0; i < messageLines.length; i++) {
+                await typeLine(messageLines[i]);
+                if (i < messageLines.length - 1) {
+                    typingBox.innerHTML += "<br>";
                 }
-                i++;
-                setTimeout(typeWriter, 50); // Adjust typing speed here
             }
         }
-        
-        envelopeContainer.addEventListener('click', () => {
-            if (envelopeContainer.classList.contains('open')) {
-                return;
+
+        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        async function typeLine(text) {
+            const words = text.split(' ');
+            for (let w = 0; w < words.length; w++) {
+                typingBox.textContent += (w === 0 ? "" : " ") + words[w];
+                await sleep(100); // Adjust typing speed here
             }
+        }
 
-            envelopeContainer.classList.add('open');
-
-            myConfetti({
-                particleCount: 150,
-                spread: 120,
-                origin: { x: 0.5, y: 0.6 },
-                colors: ['#ffc0cb', '#f4c2c2', '#d391aa', '#ffffff']
-            });
-            
-            myConfetti({
-                particleCount: 100,
-                spread: 120,
-                origin: { x: 0.5, y: 0.8 },
-                colors: ['#ffc0cb', '#f4c2c2', '#d391aa', '#ffffff']
-            });
-
-            setTimeout(() => {
-                letterCard.classList.add('slide-out');
-                
-                setTimeout(() => {
-                    typeWriter();
-                }, 1000); 
-                
-            }, 800);
-        });
+        function startHearts() {
+            const container = document.getElementById('hearts');
+            setInterval(() => {
+                for (let i = 0; i < 4; i++) {
+                    const h = document.createElement('span');
+                    h.className = 'heart-dot';
+                    h.style.left = (Math.random() * 100) + '%';
+                    h.style.bottom = '-12px';
+                    h.style.background = Math.random() > .5 ? '#f59db6' : '#f7d26a';
+                    h.style.animationDuration = (5 + Math.random() * 3) + 's';
+                    container.appendChild(h);
+                    setTimeout(() => h.remove(), 8000);
+                }
+            }, 1000);
+        }
     </script>
 </body>
 </html>
