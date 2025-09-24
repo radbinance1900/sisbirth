@@ -99,7 +99,7 @@
         
         .letter-card {
             position: absolute;
-            top: 0;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, 0%) scale(0.8);
             width: 80%;
@@ -112,6 +112,7 @@
             display: none;
             transition: transform 1.5s ease-out;
             z-index: 4;
+            transform-origin: top center;
         }
         
         .letter-card.slide-out {
